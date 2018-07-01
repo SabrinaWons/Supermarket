@@ -7,6 +7,10 @@ import java.util.Set;
 
 import com.mysupermaket.manager.Checkout;
 
+/**
+ * The basket contains all the items the user has put in his basket
+ * 
+ */
 public class Basket {
 	
 	private final Map<Item, Integer> items = new HashMap<>();
