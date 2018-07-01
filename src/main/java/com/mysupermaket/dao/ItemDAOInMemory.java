@@ -26,21 +26,26 @@ public class ItemDAOInMemory implements ItemDAO {
 	private AtomicInteger nextSequence = new AtomicInteger();
 	
 	
+	/**
+	 * Creates an item
+	 * @throws IllegalArgumentException If the item already exists
+	 */
 	@Override
 	public Item create(Item item) {
 		Item it = new Item(item);
+		if(map.get(it.getSku()) != null) {
+			throw new IllegalArgumentException("The item already exists");
+		}
 		int id = nextSequence.incrementAndGet();
 		it.setId(id);
-		synchronized(this) {
-			if(map.get(it.getSku()) != null) {
-				throw new IllegalArgumentException("The item already exists");
-			}
-			map.put(it.getSku(), it);
-		}
+		map.put(it.getSku(), it);
 		return it;
 	}
 
-	
+	/**
+	 * Returns the item
+	 * If not found or if sku is null, returns null
+	 */
 	@Override
 	public Item getItem(String sku) {
 		Item item = map.values()
@@ -49,6 +54,19 @@ public class ItemDAOInMemory implements ItemDAO {
 			.findFirst()
 			.orElse(null);
 		return item;
+	}
+	
+	/**
+	 * Deletes an item
+	 * @throws NullPointerException If item is null
+	 */
+	@Override
+	public boolean delete(Item item) {
+		boolean isAlreadyPresent = map.containsKey(item.getSku());
+		if(isAlreadyPresent) {
+			map.remove(item.getSku());
+		}
+		return isAlreadyPresent;
 	}
 
 }

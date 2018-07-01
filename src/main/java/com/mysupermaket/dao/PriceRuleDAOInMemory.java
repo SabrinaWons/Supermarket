@@ -13,19 +13,27 @@ import com.mysupermaket.manager.PriceRuleManager;
 
 public class PriceRuleDAOInMemory implements PriceRuleDAO {
 	
+	// Eager instantiation
 	private static final PriceRuleDAOInMemory instance = new PriceRuleDAOInMemory();
 	
+	// The map contains all the PrceRules
+	// The key is the priceRule.id, the value is the PriceRule
 	private Map<Integer, PriceRule> map = new ConcurrentHashMap<>();
 	private AtomicInteger nextSequence = new AtomicInteger();
 	
+	// Prevents instantiation outside from the class
 	private PriceRuleDAOInMemory() {
-		
 	}
 	
+	// Singleton
 	public static PriceRuleDAOInMemory getInstance() {
 		return instance;
 	}
 
+	/**
+	 * Add a new price rule to the map
+	 * @return The newly created price rule
+	 */
 	@Override
 	public PriceRule createPriceRule(PriceRule priceRule) {
 		int id = nextSequence.incrementAndGet();
@@ -36,6 +44,10 @@ public class PriceRuleDAOInMemory implements PriceRuleDAO {
 		return pr;
 	}
 
+	/**
+	 * Returns the list of price rules associated to the set of items
+	 * @throws NullPointerException If items is null
+	 */
 	@Override
 	public Set<PriceRule> getPriceRules(Set<Item> items) {
 		Set<PriceRule> priceRules = new HashSet<>();
@@ -47,6 +59,20 @@ public class PriceRuleDAOInMemory implements PriceRuleDAO {
 			}
 		}
 		return priceRules;
+	}
+
+	/**
+	 * Removes the price rule from the map
+	 * @returns	true is the price rule has been deleted, false otherwise
+	 * @throws NullPointerException If priceRule is null
+	 */
+	@Override
+	public boolean deletePriceRule(PriceRule priceRule) {
+		boolean isAlreadyPresent = map.containsKey(priceRule.getId());
+		if(isAlreadyPresent) {
+			map.remove(priceRule.getId());
+		}
+		return isAlreadyPresent;
 	}
 	
 	

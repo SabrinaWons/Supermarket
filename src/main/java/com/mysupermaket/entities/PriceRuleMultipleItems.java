@@ -10,8 +10,18 @@ public class PriceRuleMultipleItems implements PriceRule {
 	private double price;
 	
 
-	
+	/**
+	 * Constructor
+	 * @param item
+	 * @param threshold
+	 * @param price
+	 * @throws IllegalArgumentException If item is null, or if threshold is lower than 1, 
+	 * or if price is negative
+	 */
 	public PriceRuleMultipleItems(Item item, int threshold, double price) {
+		if(item == null) {
+			throw new IllegalArgumentException("The item can't be null");
+		}
 		this.item = item;
 		if(threshold < 1) {
 			throw new IllegalArgumentException("The threshold must be greater than 1");
@@ -63,33 +73,35 @@ public class PriceRuleMultipleItems implements PriceRule {
 
 
 
+	/**
+	 * Applies this priceRule to the given type of Item
+	 * For one type of item (Ex: Item "A"), returns the total price of all the items "A"
+	 * that are present in the basket
+	 * @throws NullPointerException If basket or item is null
+	 */
 	@Override
 	public double getTotalPriceItemFromPriceRule(Basket basket, Item item) {
 		
+		int quantity = basket.getQuantity(item);
 		
-			int quantity = basket.getQuantity(item);
-			
-			int quotient  = quantity / threshold;
-			int remainder = quantity % threshold;
-			
-			BigDecimal quotientBG = BigDecimal.valueOf(price).multiply(BigDecimal.valueOf(quotient));
-			BigDecimal remainderBD = BigDecimal.valueOf(item.getPrice()).multiply(BigDecimal.valueOf(remainder));
-			
-			return quotientBG.doubleValue() + remainderBD.doubleValue();
-			
+		int quotient  = quantity / threshold;
+		int remainder = quantity % threshold;
 		
+		BigDecimal quotientBG = BigDecimal.valueOf(price).multiply(BigDecimal.valueOf(quotient));
+		BigDecimal remainderBD = BigDecimal.valueOf(item.getPrice()).multiply(BigDecimal.valueOf(remainder));
 		
+		return quotientBG.doubleValue() + remainderBD.doubleValue();
 		
 	}
 
 
-
+	@Override
 	public int getId() {
 		return id;
 	}
 
 
-
+	@Override
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -101,42 +113,13 @@ public class PriceRuleMultipleItems implements PriceRule {
 		return item;
 	}
 
-
-
-
 	public int getThreshold() {
 		return threshold;
 	}
 
-
-
-
-	public void setThreshold(int threshold) {
-		this.threshold = threshold;
-	}
-
-
-
-
 	public double getPrice() {
 		return price;
 	}
-
-
-
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
-
-
-
-
-
-
-
-
 
 	
 }

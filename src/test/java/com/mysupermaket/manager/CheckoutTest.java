@@ -76,5 +76,24 @@ public class CheckoutTest {
 		
 	}
 	
+	@Test
+	public void testDoCheckoutWhenSeveralPriceRules() {
+		Item itemA = new Item("A", 10);
+		
+		basket.addItem(itemA);
+		basket.addItem(itemA);
+		basket.addItem(itemA);
+		basket.addItem(itemA);
+		
+		Set<PriceRule> priceRules = new HashSet<>();
+		PriceRule priceRuleA = new PriceRuleMultipleItems(itemA, 2, 18);
+		PriceRule priceRuleB = new PriceRuleMultipleItems(itemA, 3, 27);
+		priceRules.add(priceRuleA);
+		priceRules.add(priceRuleB);
+		
+		checkout.doCheckout(basket, priceRules);
+		Assert.assertEquals(36, basket.getTotal(), 0);
+		
+	}
 
 }

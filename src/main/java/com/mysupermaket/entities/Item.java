@@ -7,12 +7,16 @@ public class Item {
 	private String sku;
 	private double price;
 
-
-	public Item() {
-		
-	}
-	
+	/**
+	 * Constructor
+	 * @param sku
+	 * @param price
+	 * @throws IllegalArgumentException If sku is null or price is negative
+	 */
 	public Item(String sku, double price) {
+		if(sku == null) {
+			throw new IllegalArgumentException("The sku is required");
+		}
 		this.sku = sku;
 		if(price < 0) {
 			throw new IllegalArgumentException("The price can't be negative");
@@ -20,16 +24,18 @@ public class Item {
 		this.price = price;
 	}
 	
+	/**
+	 * Constructor
+	 * @param sku
+	 * @param price
+	 * @throws NullPointerException If item is null
+	 * @throws IllegalArgumentException If sku is null or price is negative
+	 */
 	public Item(Item item) {
+		this(item.sku, item.price);
 		this.id = item.id;
-		this.sku = item.sku;
-		this.price = item.price;
-		
 	}
 	
-	public void setSku(String sku) {
-		this.sku = sku;
-	}
 	public String getSku() {
 		return sku;
 	}

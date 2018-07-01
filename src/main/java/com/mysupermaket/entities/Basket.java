@@ -13,6 +13,7 @@ import com.mysupermaket.manager.Checkout;
  */
 public class Basket {
 	
+	// Contains all the items in the basket
 	private final Map<Item, Integer> items = new HashMap<>();
 	
 	private double subTotal;
@@ -27,17 +28,45 @@ public class Basket {
 		this.isComputed = isComputed;
 	}
 
+	/**
+	 * Returns the set of items in the basket.
+	 * It does not take into account the quantity for each item.
+	 * @return
+	 */
 	public Set<Item> getItems() {
 		return items.keySet();
 	}
 
+	/**
+	 * Adds an item to the basket. 
+	 * Increments the quantity of item if the item is already present in the basket
+	 * @param item
+	 */
 	public void addItem(Item item) {
 		Integer quantity = items.get(item) == null ? 1 : items.get(item) + 1;
 		items.put(item, quantity);
 		isComputed = false;
 	}
-
 	
+	/**
+	 * Removes the item from the basket
+	 * Decrements the quantity of the item if the item is already present in the basket
+	 * @param item
+	 */
+	public void deleteOneItem(Item item) {
+		Integer quantity = items.get(item) == null ? 0 : items.get(item) - 1;
+		if(quantity < 1) {
+			items.remove(item);
+		} else {
+			items.put(item, quantity);
+		}
+		isComputed = false;
+	}
+
+	/**
+	 * Adds a price to the current sub total of the basket
+	 * @param price
+	 */
 	public void addToSubTotal(double price) {
 		this.subTotal += price;
 	}

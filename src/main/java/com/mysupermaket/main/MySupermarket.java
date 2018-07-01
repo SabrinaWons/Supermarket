@@ -28,6 +28,10 @@ public class MySupermarket {
 		this.itemDao = itemDao;
 	}
 	
+	public void setPriceRuleDAO(PriceRuleDAO priceRuleDao) {
+		this.priceRuleDao = priceRuleDao;
+	}
+	
 	public Item getItem(String name) {
 		return itemDao.getItem(name);
 	}
