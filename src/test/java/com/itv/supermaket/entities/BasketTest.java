@@ -1,4 +1,4 @@
-package com.mysupermaket.main;
+package com.itv.supermaket.entities;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -7,10 +7,10 @@ import java.util.Set;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.mysupermaket.entities.Basket;
-import com.mysupermaket.entities.Item;
-import com.mysupermaket.entities.PriceRule;
-import com.mysupermaket.entities.PriceRuleMultipleItems;
+import com.itv.supermaket.entities.Basket;
+import com.itv.supermaket.entities.Item;
+import com.itv.supermaket.entities.PriceRule;
+import com.itv.supermaket.entities.PriceRuleMultipleItems;
 
 public class BasketTest {
 
@@ -20,8 +20,8 @@ public class BasketTest {
 		basket.addItem(new Item("A", 23));
 		basket.addItem(new Item("B", 11));
 		
-		double total = basket.getTotal();
-		Assert.assertEquals(34, total, 0);
+		basket.checkout(new HashSet<>());
+		Assert.assertEquals(34, basket.getTotal(), 0);
 		
 	}
 	
@@ -29,8 +29,8 @@ public class BasketTest {
 	public void testGetTotalWhenEmpty() {
 		Basket basket = new Basket();
 		
-		double total = basket.getTotal();
-		Assert.assertEquals(0, total, 0);
+		basket.checkout(new HashSet<>());
+		Assert.assertEquals(0, basket.getTotal(), 0);
 		
 	}
 	
@@ -48,10 +48,10 @@ public class BasketTest {
 		PriceRule rule = new PriceRuleMultipleItems(itemA, 2, 30);
 		Set<PriceRule> priceRules = new HashSet<>(Arrays.asList(rule));
 		
+		basket.checkout(priceRules);
 		
-		double total = basket.getTotal(priceRules);
-		
-		Assert.assertEquals(41, total, 0);
+		Assert.assertEquals(41, basket.getTotal(), 0);
 		
 	}
+
 }

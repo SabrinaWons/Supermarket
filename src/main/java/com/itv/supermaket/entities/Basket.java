@@ -1,11 +1,10 @@
-package com.mysupermaket.entities;
+package com.itv.supermaket.entities;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.mysupermaket.manager.Checkout;
+import com.itv.supermaket.manager.Checkout;
 
 /**
  * The basket contains all the items the user has put in his basket
@@ -17,23 +16,14 @@ public class Basket {
 	private final Map<Item, Integer> items = new HashMap<>();
 	
 	private double subTotal;
-	private boolean isComputed;
 	
-	
-	public boolean isComputed() {
-		return isComputed;
-	}
-
-	public void setComputed(boolean isComputed) {
-		this.isComputed = isComputed;
-	}
 
 	/**
 	 * Returns the set of items in the basket.
 	 * It does not take into account the quantity for each item.
 	 * @return
 	 */
-	public Set<Item> getItems() {
+	public Set<Item> getSetOfItems() {
 		return items.keySet();
 	}
 
@@ -45,7 +35,6 @@ public class Basket {
 	public void addItem(Item item) {
 		Integer quantity = items.get(item) == null ? 1 : items.get(item) + 1;
 		items.put(item, quantity);
-		isComputed = false;
 	}
 	
 	/**
@@ -60,16 +49,8 @@ public class Basket {
 		} else {
 			items.put(item, quantity);
 		}
-		isComputed = false;
 	}
 
-	/**
-	 * Adds a price to the current sub total of the basket
-	 * @param price
-	 */
-	public void addToSubTotal(double price) {
-		this.subTotal += price;
-	}
 	
 	/**
 	 * Returns the quantity of the given item found in the basket
@@ -82,26 +63,22 @@ public class Basket {
 		return quantity;
 	}
 
-	/** Returns the total of a basket
+	/** 
+	 * Computes and updates the total
 	 * Applies a set of price rules
 	 * @return
 	 */
-	public double getTotal(Set<PriceRule> priceRules) {
-		if(isComputed) {
-			return subTotal;
-		}
+	public void checkout(Set<PriceRule> priceRules) {
 		Checkout checkout = new Checkout();
-		checkout.doCheckout(this, priceRules);
-		isComputed = true;
-		return subTotal;
+		double total = checkout.computeCheckout(this, priceRules);
+		subTotal = total;
 	}
 	
 	/** Returns the total of a basket
 	 * @return
 	 */
 	public double getTotal() {
-		Set<PriceRule> priceRules = new HashSet<>();
-		return getTotal(priceRules);
+		return subTotal;
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.mysupermaket.manager;
+package com.itv.supermaket.manager;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -6,10 +6,11 @@ import java.util.Set;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.mysupermaket.entities.Basket;
-import com.mysupermaket.entities.Item;
-import com.mysupermaket.entities.PriceRule;
-import com.mysupermaket.entities.PriceRuleMultipleItems;
+import com.itv.supermaket.entities.Basket;
+import com.itv.supermaket.entities.Item;
+import com.itv.supermaket.entities.PriceRule;
+import com.itv.supermaket.entities.PriceRuleMultipleItems;
+import com.itv.supermaket.manager.Checkout;
 
 
 public class CheckoutTest {
@@ -21,8 +22,8 @@ public class CheckoutTest {
 	@Test
 	public void testDoCheckoutWhenEmpty() {
 		
-		checkout.doCheckout(basket, priceRules);
-		Assert.assertEquals(0, basket.getTotal(), 0);
+		double total = checkout.computeCheckout(basket, priceRules);
+		Assert.assertEquals(0, total, 0);
 		
 	}
 	
@@ -34,8 +35,8 @@ public class CheckoutTest {
 		basket.addItem(itemA);
 		basket.addItem(itemB);
 		
-		checkout.doCheckout(basket, priceRules);
-		Assert.assertEquals(7, basket.getTotal(), 0);
+		double total = checkout.computeCheckout(basket, priceRules);
+		Assert.assertEquals(7, total, 0);
 		
 	}
 	
@@ -48,8 +49,22 @@ public class CheckoutTest {
 		basket.addItem(itemA);
 		
 		
-		checkout.doCheckout(basket, priceRules);
-		Assert.assertEquals(0.9, basket.getTotal(), 0);
+		double total = checkout.computeCheckout(basket, priceRules);
+		Assert.assertEquals(0.9, total, 0);
+		
+	}
+	
+	@Test
+	public void testDoCheckoutWithNoPriceRules3() {
+		Item itemA = new Item("A", 5.1);
+		Item itemB = new Item("B", 0.1);
+		
+		basket.addItem(itemA);
+		basket.addItem(itemB);
+		
+		
+		double total = checkout.computeCheckout(basket, priceRules);
+		Assert.assertEquals(5.2, total, 0);
 		
 	}
 	
@@ -70,8 +85,8 @@ public class CheckoutTest {
 		priceRules.add(priceRuleB);
 		
 		
-		checkout.doCheckout(basket, priceRules);
-		Assert.assertEquals(13, basket.getTotal(), 0);
+		double total = checkout.computeCheckout(basket, priceRules);
+		Assert.assertEquals(13, total, 0);
 		
 		
 	}
@@ -91,8 +106,8 @@ public class CheckoutTest {
 		priceRules.add(priceRuleA);
 		priceRules.add(priceRuleB);
 		
-		checkout.doCheckout(basket, priceRules);
-		Assert.assertEquals(36, basket.getTotal(), 0);
+		double total = checkout.computeCheckout(basket, priceRules);
+		Assert.assertEquals(36, total, 0);
 		
 	}
 

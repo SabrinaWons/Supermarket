@@ -1,7 +1,12 @@
-package com.mysupermaket.entities;
+package com.itv.supermaket.entities;
 
 import java.math.BigDecimal;
 
+/**
+ * This class is an implementation of PriceRule
+ * 
+ * This is a discount of the type : x items for £x.xx
+ */
 public class PriceRuleMultipleItems implements PriceRule {
 	
 	private int id;
@@ -90,7 +95,8 @@ public class PriceRuleMultipleItems implements PriceRule {
 		BigDecimal quotientBG = BigDecimal.valueOf(price).multiply(BigDecimal.valueOf(quotient));
 		BigDecimal remainderBD = BigDecimal.valueOf(item.getPrice()).multiply(BigDecimal.valueOf(remainder));
 		
-		return quotientBG.doubleValue() + remainderBD.doubleValue();
+		BigDecimal total = quotientBG.add(remainderBD);
+		return total.doubleValue();
 		
 	}
 
@@ -100,13 +106,10 @@ public class PriceRuleMultipleItems implements PriceRule {
 		return id;
 	}
 
-
 	@Override
 	public void setId(int id) {
 		this.id = id;
 	}
-
-
 
 	@Override
 	public Item getItem() {

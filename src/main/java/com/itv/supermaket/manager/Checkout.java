@@ -1,4 +1,4 @@
-package com.mysupermaket.manager;
+package com.itv.supermaket.manager;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -6,21 +6,26 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.mysupermaket.entities.Basket;
-import com.mysupermaket.entities.Item;
-import com.mysupermaket.entities.PriceRule;
+import com.itv.supermaket.entities.Basket;
+import com.itv.supermaket.entities.Item;
+import com.itv.supermaket.entities.PriceRule;
 
+/**
+ * This class computes the total of a basket, applying a set of price rules 
+ * 
+ */
 public class Checkout {
 	
 	/**
-	 * Updates the total of the basket, following a set of price rules
+	 * Returns the total of the basket, following a set of price rules
 	 * @param basket
 	 * @param allPriceRules
 	 * @throws NullPointerException If basket or priceRules is null
 	 */
-	public void doCheckout(Basket basket, Set<PriceRule> allPriceRules) {
+	public double computeCheckout(Basket basket, Set<PriceRule> allPriceRules) {
 
-		for(Item item : basket.getItems()) {
+		BigDecimal totalBasket = BigDecimal.valueOf(0);
+		for(Item item : basket.getSetOfItems()) {
 			List<PriceRule> priceRules = getPriceRules(allPriceRules, item);
 			// Try all the price rules and then select the smaller price
 			List<Double> prices = new ArrayList<>();
@@ -39,12 +44,13 @@ public class Checkout {
 			
 			// Choose the smaller price and apply it to the basket
 			double priceItem = prices.stream().mapToDouble(d -> d).min().orElse(0);
-			basket.addToSubTotal(priceItem);
+			totalBasket = totalBasket.add(BigDecimal.valueOf(priceItem));
+			
 			
 
 		}
 		
-		basket.setComputed(true);
+		return totalBasket.doubleValue();
 	}
 	
 	/**

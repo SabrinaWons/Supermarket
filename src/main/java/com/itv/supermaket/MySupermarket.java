@@ -1,27 +1,23 @@
-package com.mysupermaket.main;
+package com.itv.supermaket;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import com.mysupermaket.dao.ItemDAO;
-import com.mysupermaket.dao.ItemDAOInMemory;
-import com.mysupermaket.dao.PriceRuleDAO;
-import com.mysupermaket.dao.PriceRuleDAOInMemory;
-import com.mysupermaket.manager.PriceRuleManager;
-import com.mysupermaket.entities.Item;
-import com.mysupermaket.entities.PriceRule;
-import com.mysupermaket.entities.PriceRuleMultipleItems;
+import com.itv.supermaket.dao.ItemDAO;
+import com.itv.supermaket.dao.PriceRuleDAO;
+import com.itv.supermaket.entities.Item;
+import com.itv.supermaket.entities.PriceRule;
+import com.itv.supermaket.entities.PriceRuleMultipleItems;
 
 public class MySupermarket {
 
-	private ItemDAO itemDao = ItemDAOInMemory.getInstance();
-	private PriceRuleDAO priceRuleDao = PriceRuleDAOInMemory.getInstance();
+	private ItemDAO itemDao;
+	private PriceRuleDAO priceRuleDao;
 	
-	private static MySupermarket instance = new MySupermarket();
-	private MySupermarket() {}
 	
-	public static MySupermarket getInstance() {
-		return instance;
+	public MySupermarket(ItemDAO itemDAO, PriceRuleDAO priceRuleDAO) {
+		this.itemDao = itemDAO;
+		this.priceRuleDao = priceRuleDAO;
 	}
 	
 	public void setItemDAO(ItemDAO itemDao) {
@@ -43,11 +39,11 @@ public class MySupermarket {
 	 */
 	public Set<PriceRule> getCopyOfPriceRules(Set<Item> items) {
 		Set<PriceRule> priceRules = priceRuleDao.getPriceRules(items);
-		PriceRuleManager prm = new PriceRuleManager();
+		
 		
 		Set<PriceRule> result = new HashSet<>();
 		for(PriceRule priceRule : priceRules) {
-			PriceRule pr = prm.copyPriceRule(priceRule);
+			PriceRule pr = PriceRuleDAO.copyPriceRule(priceRule);
 			result.add(pr);
 			
 		}

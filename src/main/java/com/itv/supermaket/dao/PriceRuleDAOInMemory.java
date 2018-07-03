@@ -1,4 +1,4 @@
-package com.mysupermaket.dao;
+package com.itv.supermaket.dao;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -6,9 +6,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.mysupermaket.entities.Item;
-import com.mysupermaket.entities.PriceRule;
-import com.mysupermaket.manager.PriceRuleManager;
+import com.itv.supermaket.entities.Item;
+import com.itv.supermaket.entities.PriceRule;
 
 
 public class PriceRuleDAOInMemory implements PriceRuleDAO {
@@ -16,7 +15,7 @@ public class PriceRuleDAOInMemory implements PriceRuleDAO {
 	// Eager instantiation
 	private static final PriceRuleDAOInMemory instance = new PriceRuleDAOInMemory();
 	
-	// The map contains all the PrceRules
+	// The map contains all the PriceRules
 	// The key is the priceRule.id, the value is the PriceRule
 	private Map<Integer, PriceRule> map = new ConcurrentHashMap<>();
 	private AtomicInteger nextSequence = new AtomicInteger();
@@ -30,24 +29,18 @@ public class PriceRuleDAOInMemory implements PriceRuleDAO {
 		return instance;
 	}
 
-	/**
-	 * Add a new price rule to the map
-	 * @return The newly created price rule
-	 */
+
 	@Override
 	public PriceRule createPriceRule(PriceRule priceRule) {
 		int id = nextSequence.incrementAndGet();
-		PriceRuleManager prm = new PriceRuleManager();
-		PriceRule pr = prm.copyPriceRule(priceRule);
+		
+		PriceRule pr = PriceRuleDAO.copyPriceRule(priceRule);
 		pr.setId(id);
 		map.put(id, pr);
 		return pr;
 	}
 
-	/**
-	 * Returns the list of price rules associated to the set of items
-	 * @throws NullPointerException If items is null
-	 */
+
 	@Override
 	public Set<PriceRule> getPriceRules(Set<Item> items) {
 		Set<PriceRule> priceRules = new HashSet<>();
@@ -61,11 +54,7 @@ public class PriceRuleDAOInMemory implements PriceRuleDAO {
 		return priceRules;
 	}
 
-	/**
-	 * Removes the price rule from the map
-	 * @returns	true is the price rule has been deleted, false otherwise
-	 * @throws NullPointerException If priceRule is null
-	 */
+
 	@Override
 	public boolean deletePriceRule(PriceRule priceRule) {
 		boolean isAlreadyPresent = map.containsKey(priceRule.getId());

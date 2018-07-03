@@ -1,6 +1,9 @@
-package com.mysupermaket.entities;
+package com.itv.supermaket.entities;
 
-
+/**
+ * This class represents an Item
+ *
+ */
 public class Item {
 	
 	private int id;
