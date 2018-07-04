@@ -28,5 +28,22 @@ public class PriceRuleMultipleItemsTest {
 		
 	}
 	
+	@Test(expected = IllegalArgumentException.class)
+	public void testConstructorWhenItemIsNull() {
+		new PriceRuleMultipleItems(null, 2, 60);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testConstructorWhenThreasholdIsNegative() {
+		Item item = new Item("A", 32);
+		new PriceRuleMultipleItems(item, -2, 60);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testConstructorWhenPriceIsNegative() {
+		Item item = new Item("A", 32);
+		new PriceRuleMultipleItems(item, 2, -60);
+	}
+	
 
 }

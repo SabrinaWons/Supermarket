@@ -52,6 +52,28 @@ public class BasketTest {
 		
 		Assert.assertEquals(41, basket.getTotal(), 0);
 		
+		
+		
 	}
 
+	@Test
+	public void testDeleteItem() {
+		Item itemA = new Item("A", 23);
+		Basket basket = new Basket();
+		basket.addItem(itemA);
+		basket.deleteOneItem(new Item("A", 23));
+		
+		int quantity = basket.getQuantity(new Item("A", 23));
+		Assert.assertEquals(0, quantity);
+		
+		basket.addItem(itemA);
+		basket.addItem(itemA);
+		basket.deleteOneItem(new Item("A", 23));
+		quantity = basket.getQuantity(new Item("A", 23));
+		Assert.assertEquals(1, quantity);
+		
+		basket.deleteOneItem(new Item("B", 2));
+		quantity = basket.getQuantity(new Item("B", 23));
+		Assert.assertEquals(0, quantity);
+	}
 }
