@@ -7,6 +7,7 @@ import com.itv.supermaket.dao.ItemDAO;
 import com.itv.supermaket.dao.PriceRuleDAO;
 import com.itv.supermaket.entities.Item;
 import com.itv.supermaket.entities.PriceRule;
+import com.itv.supermaket.manager.PriceRuleManager;
 
 public class MySupermarket {
 
@@ -40,7 +41,7 @@ public class MySupermarket {
 		
 		Set<PriceRule> result = new HashSet<>();
 		for(PriceRule priceRule : priceRules) {
-			PriceRule pr = PriceRuleDAO.copyPriceRule(priceRule);
+			PriceRule pr = new PriceRuleManager().copyPriceRule(priceRule);
 			result.add(pr);
 		}
 		

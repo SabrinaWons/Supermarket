@@ -21,13 +21,6 @@ public interface PriceRuleDAO {
 	public PriceRule createPriceRule(PriceRule priceRule);
 	
 	/**
-	 * Removes the price rule from the map
-	 * @returns	true is the price rule has been deleted, false otherwise
-	 * @throws NullPointerException If priceRule is null
-	 */
-	public boolean deletePriceRule(PriceRule priceRule);
-	
-	/**
 	 * Returns the list of price rules associated to the set of items
 	 * @throws NullPointerException If items is null
 	 */
@@ -38,14 +31,6 @@ public interface PriceRuleDAO {
 	 * @param priceRule
 	 * @return
 	 */
-	public static PriceRule copyPriceRule(PriceRule priceRule) {
-		
-		if(priceRule instanceof PriceRuleMultipleItems) {
-			PriceRuleMultipleItems priceRuleMI = (PriceRuleMultipleItems) priceRule;
-			PriceRuleMultipleItems pr = new PriceRuleMultipleItems(new Item(priceRule.getItem()), priceRuleMI.getThreshold(), priceRuleMI.getPrice());
-			return pr;
-		}
-		return null;
-	}
+
 
 }

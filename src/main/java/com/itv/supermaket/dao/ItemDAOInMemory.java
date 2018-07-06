@@ -51,13 +51,7 @@ public class ItemDAOInMemory implements ItemDAO {
 		return item;
 	}
 	
-	@Override
-	public boolean delete(Item item) {
-		boolean isAlreadyPresent = map.containsKey(item.getSku());
-		if(isAlreadyPresent) {
-			map.remove(item.getSku());
-		}
-		return isAlreadyPresent;
-	}
+
+
 
 }

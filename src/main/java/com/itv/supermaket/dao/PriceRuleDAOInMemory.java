@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.itv.supermaket.entities.Item;
 import com.itv.supermaket.entities.PriceRule;
+import com.itv.supermaket.manager.PriceRuleManager;
 
 
 public class PriceRuleDAOInMemory implements PriceRuleDAO {
@@ -34,7 +35,7 @@ public class PriceRuleDAOInMemory implements PriceRuleDAO {
 	public PriceRule createPriceRule(PriceRule priceRule) {
 		int id = nextSequence.incrementAndGet();
 		
-		PriceRule pr = PriceRuleDAO.copyPriceRule(priceRule);
+		PriceRule pr = new PriceRuleManager().copyPriceRule(priceRule);
 		pr.setId(id);
 		map.put(id, pr);
 		return pr;
@@ -54,15 +55,6 @@ public class PriceRuleDAOInMemory implements PriceRuleDAO {
 		return priceRules;
 	}
 
-
-	@Override
-	public boolean deletePriceRule(PriceRule priceRule) {
-		boolean isAlreadyPresent = map.containsKey(priceRule.getId());
-		if(isAlreadyPresent) {
-			map.remove(priceRule.getId());
-		}
-		return isAlreadyPresent;
-	}
 	
 	
 
